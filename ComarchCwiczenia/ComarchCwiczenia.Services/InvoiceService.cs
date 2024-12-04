@@ -1,4 +1,6 @@
 ﻿
+using ComarchCwiczenia.Services.Model;
+
 namespace ComarchCwiczenia.Services;
 
 public class InvoiceService
@@ -9,5 +11,14 @@ public class InvoiceService
         int randomPart = new Random().Next(100, 999);
 
         return $"INV-{datePart}-{randomPart}";
+    }
+
+    public ICollection<InvoiceItem> GenerateInvoiceItems()
+    {
+        return [
+            new() { Id = Guid.NewGuid(), ProductName = "Laptop", Quantity = 1, UnitPrice = 1000m },
+            new() { Id = Guid.NewGuid(), ProductName = "Smartphone", Quantity = 2, UnitPrice = 500m },
+            new() { Id = Guid.NewGuid(), ProductName = "Tablet", Quantity = 3, UnitPrice = 300m }
+        ];
     }
 }

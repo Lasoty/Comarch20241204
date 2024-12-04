@@ -1,4 +1,7 @@
-﻿using ComarchCwiczenia.Services;
+﻿using System.Security.Cryptography.X509Certificates;
+using ComarchCwiczenia.Services;
+using ComarchCwiczenia.Services.Model;
+using NUnit.Framework.Legacy;
 
 namespace ComarchCwiczenia.Unit.Test.Services;
 
@@ -13,6 +16,7 @@ public class InvoiceServiceTests
         cut = new InvoiceService();
     }
 
+    #region String tests
     [Test]
     public void GenerateInvoiceNumberShouldStartWithINV()
     {
@@ -56,4 +60,32 @@ public class InvoiceServiceTests
         Assert.That(actual, Is.Not.Empty);
         Assert.That(actual.Length, Is.EqualTo(16));
     }
+    #endregion
+
+    #region Collection Tests
+
+    [Test]
+    public void GenerateInvoiceItemsShouldReturnNotEmptyCollection()
+    {
+        // Act
+        ICollection<InvoiceItem> items = cut.GenerateInvoiceItems();
+
+        // Assert
+        CollectionAssert.IsNotEmpty(items);
+        Assert.That(items, Does.Not.Empty);
+    }
+
+    [Test]
+    public void GenerateInvoiceItemsShouldReturnCorrectCollection()
+    {
+        // Act
+        ICollection<InvoiceItem> items = cut.GenerateInvoiceItems();
+
+        // Assert
+        Assert.That(items, Does.Not.Empty.And.Contain(items.First(x => x.ProductName.Equals("Laptop"))));
+        Assert.That(items.Any(x => x.Quantity <= 0), Is.False);
+        Assert.That(items.Count, Is.GreaterThan(1).And.LessThan(4));
+    }
+
+    #endregion
 }
