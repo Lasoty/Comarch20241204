@@ -34,8 +34,7 @@ public class DateCalculatorTests
     [TestCase(2024, 11, 26)]
     [TestCase(2024, 11, 27)]
     [TestCase(2024, 11, 28)]
-    public void GetNextBusinessDayShouldBeAfterInputDate(
-        int dYear, int dMonth, int dDay)
+    public void GetNextBusinessDayShouldBeAfterInputDate(int dYear, int dMonth, int dDay)
     {
         // Arrange
         DateTime day = new DateTime(dYear, dMonth, dDay);
@@ -45,6 +44,7 @@ public class DateCalculatorTests
         DateTime actual = cut.GetNextBusinessDay(day);
 
         // Assert
+        Assert.That(actual, Is.GreaterThan(day));
         Assert.That(actual, Is.EqualTo(expected));
     }
 }
