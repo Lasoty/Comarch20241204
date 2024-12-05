@@ -28,6 +28,17 @@ public class InvoiceService : IInvoiceService
         return taxableAmount + tax;
     }
 
+    public decimal CalculateInvoiceAmount(int orderId, string customerType)
+    {
+        decimal baseAmount = 100; //Docelowo wartość ma pochodzić z IOrderProvider.
+
+        decimal discount = discountService.CalculateDiscount(baseAmount, customerType);
+        decimal amountAfterDiscount = baseAmount - discount;
+        decimal tax = taxService.GetTax(amountAfterDiscount);
+        return amountAfterDiscount + tax;
+    }
+
+
 
     public event EventHandler<ICollection<InvoiceItem>>? InvoiceItemsGenerated;
 
@@ -57,11 +68,13 @@ public class InvoiceService : IInvoiceService
             throw new ArgumentException("Podatek nie może być ujemny", nameof(tax));
         }
     }
+
 }
 
 public interface IInvoiceService
 {
     decimal CalculateTotal(decimal amount, string customerType);
+    decimal CalculateInvoiceAmount(int orderId, string customerType);
 }
 
 public interface ITaxService
@@ -72,4 +85,9 @@ public interface ITaxService
 public interface IDiscountService
 {
     decimal CalculateDiscount(decimal amount, string customerType);
+}
+
+public interface IOrderProvider
+{
+    decimal GetOrderAmount(int orderId);
 }
