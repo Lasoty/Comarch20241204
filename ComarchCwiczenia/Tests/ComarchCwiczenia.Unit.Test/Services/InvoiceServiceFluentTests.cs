@@ -14,6 +14,7 @@ public class InvoiceServiceFluentTests
         cut = new InvoiceService();
     }
 
+    #region String tests
     [Test]
     public void GenerateInvoiceNumberShouldStartWithINV()
     {
@@ -73,4 +74,33 @@ public class InvoiceServiceFluentTests
         var invoiceNumber = cut.GenerateInvoiceNumber();
         invoiceNumber.Should().Match("INV-????????-???");
     }
+    #endregion
+
+    #region Collection tests
+
+    [Test]
+    public void GenerateInvoiceItemsShouldReturnCorrectItems()
+    {
+        // Act
+        var items = cut.GenerateInvoiceItems();
+
+        // Assert
+        items.Should().NotBeEmpty();
+
+        // Element o specyficznej nazwie
+        items.Should().Contain(item => item.ProductName.Equals("laptop", StringComparison.InvariantCultureIgnoreCase));
+
+        // czy wszystkie elementy spełniają warunek
+        items.Should().OnlyContain(item => item.Quantity > 0);
+
+        // czy elementy są prawidłowo posortowane
+        items.Should().BeInAscendingOrder(item => item.Quantity); //.And.ThenBeInDescendingOrder();
+    }
+
+    #endregion
+
+    #region Exeption tests
+
+
+    #endregion
 }
