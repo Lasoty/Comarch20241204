@@ -7,16 +7,18 @@ public class InvoiceService : IInvoiceService
 {
     private readonly ITaxService taxService;
     private readonly IDiscountService discountService;
+    private readonly IOrderProvider orderProvider;
 
     public InvoiceService()
     {
         
     }
 
-    public InvoiceService(ITaxService taxService, IDiscountService discountService)
+    public InvoiceService(ITaxService taxService, IDiscountService discountService, IOrderProvider orderProvider)
     {
         this.taxService = taxService;
         this.discountService = discountService;
+        this.orderProvider = orderProvider;
     }
 
     public decimal CalculateTotal(decimal amount, string customerType)
@@ -30,7 +32,7 @@ public class InvoiceService : IInvoiceService
 
     public decimal CalculateInvoiceAmount(int orderId, string customerType)
     {
-        decimal baseAmount = 100; //Docelowo wartość ma pochodzić z IOrderProvider.
+        decimal baseAmount = orderProvider.GetOrderAmount(orderId);
 
         decimal discount = discountService.CalculateDiscount(baseAmount, customerType);
         decimal amountAfterDiscount = baseAmount - discount;
