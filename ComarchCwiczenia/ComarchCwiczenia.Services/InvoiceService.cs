@@ -21,4 +21,12 @@ public class InvoiceService
             new() { Id = Guid.NewGuid(), ProductName = "Tablet", Quantity = 3, UnitPrice = 300m }
         ];
     }
+
+    public void GetGrossFromNet(decimal netValue, decimal tax)
+    {
+        if (tax < 0)
+        {
+            throw new ArgumentException("Podatek nie może być ujemny", nameof(tax));
+        }
+    }
 }

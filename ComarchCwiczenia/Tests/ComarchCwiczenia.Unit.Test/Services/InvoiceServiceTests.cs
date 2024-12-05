@@ -88,4 +88,19 @@ public class InvoiceServiceTests
     }
 
     #endregion
+
+    #region Exception tests
+
+    [Test]
+    public void GetGrossFromNetShouldThrowsExceptionWhenTaxIsNegative()
+    {
+        // Arrange
+        decimal netValue = 10m;
+        decimal tax = -1m;
+
+        //Act & Assert
+        Assert.Throws<ArgumentException>(() => cut.GetGrossFromNet(netValue, tax));
+    }
+
+    #endregion
 }
