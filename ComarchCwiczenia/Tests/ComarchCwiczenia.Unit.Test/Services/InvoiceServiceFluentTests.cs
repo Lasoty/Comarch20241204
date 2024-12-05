@@ -118,4 +118,16 @@ public class InvoiceServiceFluentTests
     }
 
     #endregion
+
+    #region Event tests
+
+    [Test]
+    public void GenerateInvoiceItemsShouldRaiseInvoiceItemsGeneratedEvent()
+    {
+        using var monitoredSubject = cut.Monitor();
+        _ = cut.GenerateInvoiceItems();
+        monitoredSubject.Should().Raise(nameof(InvoiceService.InvoiceItemsGenerated));
+    }
+
+    #endregion
 }
