@@ -1,5 +1,6 @@
 ﻿using ComarchCwiczenia.Services;
 using FluentAssertions;
+using FluentAssertions.Extensions;
 
 namespace ComarchCwiczenia.Unit.Test.Services;
 
@@ -101,6 +102,20 @@ public class InvoiceServiceFluentTests
 
     #region Exeption tests
 
+    [Test]
+    public void GetGrossFromNetShouldThrowExceptionWhenTaxIsNegative()
+    {
+        cut.Invoking(invS => invS.GetGrossFromNet(10, -1))
+            .Should().Throw<ArgumentException>()
+            .WithMessage("Podatek nie może być ujemny*");
+
+        Action act = () => cut.GetGrossFromNet(10, -1);
+
+        act.Should().Throw<ArgumentException>()
+            .WithMessage("Podatek nie może być ujemny*");
+
+        //act.Should().NotThrowAfter(10.Seconds(), 100.Microseconds()); //nie używać w testach jedn.
+    }
 
     #endregion
 }
