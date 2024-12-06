@@ -16,4 +16,5 @@ public class Invoice
     public DateTime IssueDate { get; set; }
     public string CustomerName { get; set; }
     public List<InvoiceItem> Items { get; set; }
+    public string CustomerEmail { get; set; }
 }

@@ -8,12 +8,19 @@ public class InvoiceService : IInvoiceService
     private readonly ITaxService taxService;
     private readonly IDiscountService discountService;
     private readonly IOrderProvider orderProvider;
+    private readonly IInvoiceRepository invoiceRepository;
+    private readonly IEmailSender emailSender;
 
-    public InvoiceService()
+    //public InvoiceService()
+    //{
+
+    //}
+
+    public InvoiceService(IInvoiceRepository invoiceRepository, IEmailSender emailSender)
     {
-        
+        this.invoiceRepository = invoiceRepository;
+        this.emailSender = emailSender;
     }
-
     public InvoiceService(ITaxService taxService, IDiscountService discountService, IOrderProvider orderProvider)
     {
         this.taxService = taxService;
@@ -92,6 +99,22 @@ public class InvoiceService : IInvoiceService
 
         return result;
     }
+
+    public void ProceedInvoice(Invoice invoice)
+    {
+        invoiceRepository.Save(invoice);
+        emailSender.Send(invoice.CustomerEmail, "Faktura utworzona", "Twoja faktura została utworzona.");
+    }
+}
+
+public interface IEmailSender
+{
+    void Send(string email, string subject, string message);
+}
+
+public interface IInvoiceRepository
+{
+    void Save(Invoice  invoice);
 }
 
 public interface IInvoiceService

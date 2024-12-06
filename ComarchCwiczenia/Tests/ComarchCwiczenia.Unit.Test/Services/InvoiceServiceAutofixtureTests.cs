@@ -15,7 +15,7 @@ public class InvoiceServiceAutofixtureTests
     public void Setup()
     {
         fixture = new Fixture();
-        invoiceService = new InvoiceService();
+       invoiceService = new InvoiceService(null!, null!);
     }
 
     [Test]

@@ -13,7 +13,7 @@ public class InvoiceServiceTests
     [SetUp]
     public void Setup()
     {
-        cut = new InvoiceService();
+        cut = new InvoiceService(null, null);
     }
 
     #region String tests
