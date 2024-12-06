@@ -1,5 +1,4 @@
-﻿using System.Security.Cryptography.X509Certificates;
-using ComarchCwiczenia.Services;
+﻿using ComarchCwiczenia.Services;
 using ComarchCwiczenia.Services.Model;
 using NUnit.Framework.Legacy;
 
@@ -13,7 +12,7 @@ public class InvoiceServiceTests
     [SetUp]
     public void Setup()
     {
-        cut = new InvoiceService(null, null);
+        cut = new InvoiceService(null!, null!);
     }
 
     #region String tests
