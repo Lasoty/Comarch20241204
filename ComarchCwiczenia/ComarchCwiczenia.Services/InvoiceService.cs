@@ -71,7 +71,7 @@ public class InvoiceService : IInvoiceService
         }
     }
 
-    public Invoice CreateInvoice(string customerName, List<InvoiceItem> items)
+    public Invoice CreateInvoice(string customerName, List<InvoiceItem> items, DateTime? issueDate = null)
     {
         if (string.IsNullOrWhiteSpace(customerName))
             throw new ArgumentException("Customer name cannot be empty", nameof(customerName));
@@ -85,7 +85,7 @@ public class InvoiceService : IInvoiceService
         {
             Id = new Random().Next(1, 1000),
             Amount = totalAmount,
-            IssueDate = DateTime.Now,
+            IssueDate = issueDate ?? DateTime.Now,
             CustomerName = customerName,
             Items = items
         };
