@@ -89,4 +89,14 @@ public class InvoiceServiceMoqTests
         discountServiceMock.Verify(s => s.CalculateDiscount(It.IsAny<decimal>(), It.IsAny<string>()), Times.Once);
         taxServiceMock.Verify(s => s.GetTax(90), Times.Once); //Możemy określić ilość wywołań danej metody dla konkretnej wartości parametru amount.
     }
+
+    [Test]
+    public void CalculateInvoiceAmountShouldThrowsWhenTaxServiceFails()
+    {
+        // Arrange
+        taxServiceMock.Setup(ts => ts.GetTax(It.IsAny<decimal>())).Throws(() => new Exception("Coś poszło nie tak"));
+
+        // Act & Assert
+        invoiceService.Invoking(s => s.CalculateInvoiceAmount(1, "")).Should().Throw<Exception>().WithMessage("Coś poszło nie tak*");
+    }
 }

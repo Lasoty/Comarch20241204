@@ -71,6 +71,27 @@ public class InvoiceService : IInvoiceService
         }
     }
 
+    public Invoice CreateInvoice(string customerName, List<InvoiceItem> items)
+    {
+        if (string.IsNullOrWhiteSpace(customerName))
+            throw new ArgumentException("Customer name cannot be empty", nameof(customerName));
+
+        if (items == null || !items.Any())
+            throw new ArgumentException("Invoice must have at least one item", nameof(items));
+
+        decimal totalAmount = items.Sum(item => item.Quantity * item.UnitPrice);
+
+        Invoice result = new()
+        {
+            Id = new Random().Next(1, 1000),
+            Amount = totalAmount,
+            IssueDate = DateTime.Now,
+            CustomerName = customerName,
+            Items = items
+        };
+
+        return result;
+    }
 }
 
 public interface IInvoiceService
