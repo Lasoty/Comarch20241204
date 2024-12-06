@@ -43,6 +43,7 @@ public class SeleniumTests
 
 
     [Test]
+    [TestCase(Category = "Smoke")]
     public void CorrectLoginTest()
     {
         driver.Navigate().GoToUrl("https://the-internet.herokuapp.com/login");
